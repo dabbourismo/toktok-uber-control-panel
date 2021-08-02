@@ -1,0 +1,105 @@
+﻿@model ElCaptain.Models.NotificationDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+@using (Html.BeginForm("AddEditNotification", "Notification", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="container PanelContainer">
+        <div class="panel panel-primary">
+            <div class="panel-heading">الاشعارات</div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Name,
+                           new { htmlAttributes = new { @class = "form-control", autofocus = "autofocus", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NotifType, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.NotifType
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "GovernemntDropDown" })
+                            @Html.ValidationMessageFor(model => model.NotifType)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Url, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.Url)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ExpireDate, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.ExpireDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ExpireDate)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Description,
+                           new { htmlAttributes = new { @class = "form-control", style = "height:100px;width:400px;resize:none;" } })
+                            @Html.ValidationMessageFor(model => model.Description)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @{
+                            if (Model.Id == 0)
+                            {
+                                <input type="submit" value="اضافة" class="btn btn-success" style="width:100%" />
+                            }
+                            else
+                            {
+                                <input type="submit" value="تعديل" class="btn btn-primary" style="width:100%" />
+                            }
+
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+                            }
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>$.validator.setDefaults({ onkeyup: false });</script>
+
+<script>
+    $(document).ready(function () {
+        $('.NO-CACHE').attr('src', function () { return $(this).attr('src') + "?a=" + Math.random() });
+    });
+</script>

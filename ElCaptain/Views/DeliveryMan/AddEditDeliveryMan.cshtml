@@ -1,0 +1,344 @@
+﻿@model ElCaptain.Models.DeliveryManDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+@using (Html.BeginForm("AddEditDeliveryMan", "DeliveryMan", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    @*@Html.HiddenFor(model => model.Latitude)
+    @Html.HiddenFor(model => model.Longitude)*@
+    <div class="container PanelContainer" style="width:450px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">بيانات السائق</div>
+            <div class="panel-body">
+
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", autofocus = "autofocus" } })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                </div>*@
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImageUpload1, new { @class = "control-label" })
+                            <img class="lazyload NO-CACHE" src="@Url.Content(@Model.LinkDrivingId + @Model.Id +"-"+"1"+ ".jpg")" style="height:150px;width:100%;" id="imagePreview1" />
+                            <input type="file" name="ImageUpload1" accept="image/jpeg,image/png,image/jpg" onchange="ShowImagePreview(this, document.getElementById('imagePreview1'))" />
+                            @Html.ValidationMessageFor(model => model.ImageUpload1)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ImageUpload2, new { @class = "control-label" })
+                            <img class="lazyload NO-CACHE" src="@Url.Content(@Model.LinkNationalId + @Model.Id +"-"+"2"+ ".jpg")" style="height:150px;width:100%;" id="imagePreview2" />
+                            <input type="file" name="ImageUpload2" accept="image/jpeg,image/png,image/jpg" onchange="ShowImagePreview(this, document.getElementById('imagePreview2'))" />
+                            @Html.ValidationMessageFor(model => model.ImageUpload2)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">@Html.LabelFor(model => model.ImageUpload3, new { @class = "control-label" })
+                            <img class="lazyload NO-CACHE" src="@Url.Content(@Model.LinkVehicleId + @Model.Id +"-"+"3"+ ".jpg")" style="height:150px;width:100%;" id="imagePreview3" />
+                            <input type="file" name="ImageUpload3" accept="image/jpeg,image/png,image/jpg" onchange="ShowImagePreview(this, document.getElementById('imagePreview3'))" />
+                            @Html.ValidationMessageFor(model => model.ImageUpload3)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">@Html.LabelFor(model => model.ImageUpload4, new { @class = "control-label" })
+                            <img class="lazyload NO-CACHE" src="@Url.Content(@Model.MagdarIstlam + @Model.Id +"-"+"4"+ ".jpg")" style="height:150px;width:100%;" id="ImageUpload4" />
+                            <input type="file" name="ImageUpload4" accept="image/jpeg,image/png,image/jpg" onchange="ShowImagePreview(this, document.getElementById('ImageUpload4'))" />
+                            @Html.ValidationMessageFor(model => model.ImageUpload4)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.VehicleOwnerDropDownList, new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.VehicleOwnerId, Model.VehicleOwnerDropDownList,
+                           new { @class = "form-control", role = "menu", datatoggle = "dropdown", id = "levelDropDown" })
+                            @Html.ValidationMessageFor(model => model.VehicleOwnerDropDownList)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Username, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Username)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Password, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Category, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Category
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "GovernemntDropDown" })
+                            @Html.ValidationMessageFor(model => model.Category)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DealLimit, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.DealLimit
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "GovernemntDropDown" })
+                            @Html.ValidationMessageFor(model => model.DealLimit)
+                        </div>
+                    </div>
+                </div>
+              
+
+                <div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.VehicleType, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.VehicleType
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "GovernemntDropDown" })
+                            @Html.ValidationMessageFor(model => model.VehicleType)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NumberOfTrips, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.NumberOfTrips, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.NumberOfTrips)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ChassieNumber, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.ChassieNumber, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.ChassieNumber)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MotorNumber, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.MotorNumber, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.MotorNumber)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Color, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.ValidationMessageFor(model => model.Color)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DrivingLine, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.DrivingLine, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DrivingLine)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.WorkTimes, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.WorkTimes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.WorkTimes)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.InspectionDate, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.InspectionDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.InspectionDate)
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LicenseEndDate, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.LicenseEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LicenseEndDate)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TaxEndDate, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.TaxEndDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TaxEndDate)
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NationalId, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.NationalId, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.NationalId)
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.City, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.City
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "GovernemntDropDown" })
+                            @Html.ValidationMessageFor(model => model.City)
+                        </div>
+                    </div>
+                </div>*@
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.VehicleNumber, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.ValidationMessageFor(model => model.VehicleNumber)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone1, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Phone1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Phone1)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone2, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Phone2, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Phone2)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LandPhone, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.LandPhone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LandPhone)
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BirthDate, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BirthDate)
+                        </div>
+                    </div>
+                </div>*@
+
+                <div class="form-group">
+                    @{
+                        if (Model.Id == 0)
+                        {
+                            <input type="submit" value="اضافة" class="btn btn-success" style="width:100%" />
+                        }
+                        else
+                        {
+                            <input type="submit" value="تعديل" class="btn btn-success" style="width:100%" />
+                        }
+                    }
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+                        }
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>$.validator.setDefaults({ onkeyup: false });</script>
+<script>
+    $(document).ready(function () {
+        $('.NO-CACHE').attr('src', function () { return $(this).attr('src') + "?a=" + Math.random() });
+    });
+</script>
+<script>
+    DropDownSuggestions('GovernemntDropDown');
+    DropDownSuggestions('levelDropDown');
+</script>

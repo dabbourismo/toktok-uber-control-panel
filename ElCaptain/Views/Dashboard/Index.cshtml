@@ -1,0 +1,135 @@
+﻿@model ElCaptain.Models.DashboardDto
+@{
+    ViewBag.Title = "الاحصائيات";
+}
+
+
+<div class="gradient-Header animate__animated animate__fadeInLeft">
+    <div class="gradient-child">
+        <h1>الاحصائيات</h1>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("Index", "Dashboard", FormMethod.Post))
+{
+    <div class="row" style="text-align:right;direction:rtl;font-family:Tajawal;margin-top:15px;">
+        <div class="col-md-6">
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.ToDate, new { @class = "control-label" })
+                @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", style = "width:100%" } })
+                @Html.ValidationMessageFor(model => model.ToDate)
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.FromDate, new { @class = "control-label" })
+                @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", style = "width:100%" } })
+                @Html.ValidationMessageFor(model => model.FromDate)
+
+            </div>
+        </div>
+
+        <div class="row" style="text-align:right;direction:rtl;font-family:Tajawal;margin-top:15px;">
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DeliveryMenDropDownList, new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.DeliveryManId, Model.DeliveryMenDropDownList,
+                           new { @class = "form-control", role = "Order", datatoggle = "dropdown", id = "DeliveryMenDropDownList" })
+                    @Html.ValidationMessageFor(model => model.DeliveryMenDropDownList)
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Category, new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.Category
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "CategoryDropDownList" })
+                    @Html.ValidationMessageFor(model => model.Category)
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OwnersDropDownList, new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.OwnerId, Model.OwnersDropDownList,
+                           new { @class = "form-control", role = "Order", datatoggle = "dropdown", id = "OwnersDropDownList" })
+                    @Html.ValidationMessageFor(model => model.OwnersDropDownList)
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row" style="font-family:Tajawal">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="submit" id="SearchButton" value="بحث" class="btn btn-success" style="width:100%" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="button" id="RefreshButton" value="عرض الكل" class="btn btn-info" style="width:100%" />
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-6" style="background-color:#2c4375;border-radius:20px;padding:2px">
+            <p>
+                <h2 style="color:white">عدد الرحلات</h2>
+                <h3 style="color:white">@Model.NumberOfOrders</h3>
+            </p>
+        </div>
+        <div class="col-md-6" style="background-color:#2c4375;border-radius:20px;padding:2px">
+            <p>
+                <h2 style="color:white">الدخل الكلي</h2>
+                <h3 style="color:white">@Model.TotalIncome</h3>
+            </p>
+        </div>
+    </div>
+}
+
+@section scripts{
+
+    <script>
+        $('#RefreshButton').on('click', function () {
+            window.location.reload();
+        });
+
+        function ownerChanged() {
+            $('#OwnersDropDownList,#CategoryDropDownList').on('change', function () {
+                let ownerId = parseInt($('#OwnersDropDownList').val());
+                let categoryId = parseInt($('#CategoryDropDownList').val());
+
+
+                $.ajax({
+                    type: "Get",
+                    url: "/Dashboard/GetDeliveryMen?ownerId=" + ownerId + "&categoryId=" + categoryId,
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#DeliveryMenDropDownList').empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $('#DeliveryMenDropDownList').append('<option value=' + data[i].Id + '>' + data[i].Username + '</option > ');
+                        }
+                    }
+                });
+
+
+            });
+        }
+
+
+
+        ownerChanged();
+    </script>
+}
+
+

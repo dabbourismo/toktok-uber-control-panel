@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "العملاء";
+}
+
+@Html.Partial("_TitleHeader", null,
+    new ViewDataDictionary {
+          { "Title", "المتاجر" }
+        , {"AddEditController","AddEditStore" }
+        , {"Controller","Stores" }})
+
+
+
+
+<table id="table" class="table table-bordered table-hover" style="width:100%">
+    <thead class="thead-light">
+        <tr class="rows">
+            @*<th></th>*@
+            <th>الاسم</th>
+            <th>التصنيف</th>
+            <th>موبايل 1</th>
+            <th>موبايل 2</th>
+            <th>العنوان</th>
+            <th>تاريخ التسجيل</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+    <script>
+        var buttonColumn = {
+            "data": "Id",
+            "render": RenderActionButtonsAdmin,
+            "orderable": false,
+            "searchable": false,
+            "width": "100px"
+        }
+
+
+
+        $(document).ready(
+           GetServerSideDataTable('table', '@Url.Action("ViewAllStores", "Stores")',
+               [
+                   //{ data: null, width: "4%" },
+                   {
+                       data: "Name",
+                       "name": "Name"
+                   },
+                   {
+                       data: "Category",
+                       "name": "Category",
+                       render:RenderCategory
+                   },
+                   {
+                       data: "Phone1",
+                       "name": "Phone1"
+                   },
+                   {
+                       data: "Phone2",
+                       "name": "Phone2"
+                   },
+                   {
+                       data: "Address",
+                       "name": "Address"
+                   },                   
+                   {
+                       data: "RegisterDate",
+                      "name": "RegisterDate",
+                       render: convertJsonDateToShortDate,
+
+                   },
+                   buttonColumn
+               ])
+       );
+        function RenderCategory(Category) {
+            if (Category == 0) { return '<h4><span class="label label-info badge-pill">مطاعم</span></h4>'; }
+            else if (Category == 1) { return '<h4><span class="label label-warning badge-pill">مشروبات</span></h4>'; }
+            else if (Category == 2) { return '<h4><span class="label label-success badge-pill">متاجر</span></h4>'; }
+            else if (Category == 3) { return '<h4><span class="label label-primary badge-pill">مكتبات</span></h4>'; }
+            else if (Category == 4) { return '<h4><span class="label label-danger badge-pill">صيدليات</span></h4>'; }
+        }
+
+
+        function RenderActionButtonsAdmin(Id) {
+            return "<a class='btn btn-success' style='margin-right:4px;' onclick=PopupForm('@Url.Action("AddEditStore", "Stores")/" + Id + "')><i class='fa fa-pencil'></i></a>\
+                    <a class='btn btn-danger' style='margin-right:1px;' onclick=Delete('@Url.Action("DeleteStore", "Stores")/" + Id + "','المتجر؟')><i class='fa fa-trash'></i></a>"
+        };
+
+    </script>
+
+    <script>
+        AnimateButton2('AddButton');
+    </script>
+}
+

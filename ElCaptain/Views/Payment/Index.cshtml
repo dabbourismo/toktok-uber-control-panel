@@ -1,0 +1,164 @@
+﻿@model ElCaptain.Models.SearchDto
+@{
+    ViewBag.Title = "المدفوعات";
+}
+
+<div class="gradient-Header animate__animated animate__fadeInLeft">
+    <div class="gradient-child">
+        <h1>المدفوعات</h1>
+    </div>
+</div>
+
+
+
+
+
+<div class="row" style="text-align:right;direction:rtl;font-family:Tajawal;margin-top:15px;">
+    <div class="col-md-2">
+        <div class="form-group">
+            <input type="submit" id="SearchButton" value="بحث" class="btn btn-success" style="width:100%" />
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group form-inline">
+
+            <div class="col-md-11">
+                @Html.EditorFor(model => model.ToDate,
+                   new
+                   {
+                       htmlAttributes = new
+                       {
+                           @class = "form-control",
+                           style = "width:100%"
+                       }
+                   })
+                @Html.ValidationMessageFor(model => model.ToDate)
+            </div>
+            <div class="col-md-1">
+                @Html.LabelFor(model => model.ToDate, new { @class = "control-label" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-5">
+        <div class="form-group form-inline">
+
+            <div class="col-md-11">
+                @Html.EditorFor(model => model.FromDate,
+                   new
+                   {
+                       htmlAttributes = new
+                       {
+                           @class = "form-control",
+                           style = "width:100%"
+                       }
+                   })
+                @Html.ValidationMessageFor(model => model.FromDate)
+            </div>
+            <div class="col-md-1">
+                @Html.LabelFor(model => model.FromDate, new { @class = "control-label" })
+            </div>
+        </div>
+    </div>
+
+
+    @*@Html.TextBox("txtSearch", "Test Value", new { @class = "form-control" })*@
+
+</div>
+
+
+
+
+
+
+<table id="table" class="table table-bordered table-hover" style="width:100%">
+    <thead class="thead-light">
+        <tr class="rows">
+            @*<th></th>*@
+            <th>كود الرحلة</th>
+            <th>تاريخ الرحلة</th>
+            <th>اسم العميل</th>
+            <th>تاريخ الدفع</th>
+            <th>الاتجاة</th>
+            <th>سعر الكيلومتر</th>
+            @*<th></th>*@
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+    <script>
+        var buttonColumn = {
+            "data": "Id",
+            "render": RenderActionButtonsAdmin,
+            "orderable": false,
+            "searchable": false,
+            "width": "100px"
+        }
+
+
+
+        $(document).ready(
+           GetServerSideDataTableCustomeSearch('table', '@Url.Action("ViewAllPayments", "Payment")',
+               [
+                   //{ data: null, width: "4%" },
+                   {
+                       data: "OrderId",
+                       "name": "OrderId"
+                   },
+                   {
+                       data: "OrderDate",
+                       "name": "OrderDate",
+                       render: convertJsonDateToShortDate,
+                   },
+                   {
+                       data: "ClientName",
+                       "name": "ClientName"
+                   },
+                   {
+                       data: "Date",
+                       "name": "Date",
+                       render: convertJsonDateToShortDate,
+                   },                   
+                   {
+                       data: "Direction",
+                       "name": "Direction",
+                   },
+                   {
+                       data: "PricePerKM",
+                       "name": "PricePerKM",
+                   },
+                  // buttonColumn
+               ],
+               'FromDate',
+               'ToDate')
+       );
+
+        function RenderActionButtonsAdmin(Id) {
+            return "<a class='btn btn-success' style='margin-right:4px;' onclick=PopupForm('@Url.Action("AddEditPayment", "Payment")/" + Id + "')><i class='fa fa-pencil'></i></a>\
+                    <a class='btn btn-danger' style='margin-right:1px;' onclick=Delete('@Url.Action("DeletePayment", "Payment")/" + Id + "','الرحلة؟')><i class='fa fa-trash'></i></a>"
+        };
+
+
+        oTable = $('#table').DataTable();
+        $('#SearchButton').click(function () {
+            //oTable.search($('#txtSearch').val());
+            oTable.draw();
+        });
+
+        $('#table_filter input').unbind();
+        $('#table_filter input').keyup(function (e) {
+            if (e.keyCode == 13) /* if enter is pressed */ {
+                oTable.search($(this).val()).draw();
+            }
+        });
+    </script>
+
+    <script>
+        AnimateButton2('AddButton');
+    </script>
+}
+

@@ -1,0 +1,312 @@
+﻿@model ElCaptain.Models.SearchDto
+@{
+    ViewBag.Title = "الرحلات";
+}
+
+@*@Html.Partial("_TitleHeader", null,
+    new ViewDataDictionary {
+          { "Title", "الرحلةات" }
+        , {"AddEditController","AddEditOrder" }
+        , {"Controller","Order" }})*@
+
+<div class="gradient-Header animate__animated animate__fadeInLeft">
+    <div class="gradient-child">
+        <h1>الرحلات</h1>
+    </div>
+</div>
+
+
+
+<div class="row" style="text-align:right;direction:rtl;font-family:Tajawal;margin-top:15px;">
+    <div class="col-md-1">
+        <div class="form-group">
+            <input type="submit" id="SearchButton" value="بحث" class="btn btn-success" style="width:100%" />
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group form-inline">
+            
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ToDate,
+                   new
+                   {
+                       htmlAttributes = new
+                       {
+                           @class = "form-control",
+                           style = "width:100%"
+                       }
+                   })
+                @Html.ValidationMessageFor(model => model.ToDate)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.ToDate, new { @class = "control-label" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="form-group form-inline">
+            
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FromDate,
+                   new
+                   {
+                       htmlAttributes = new
+                       {
+                           @class = "form-control",
+                           style = "width:100%"
+                       }
+                   })
+                @Html.ValidationMessageFor(model => model.FromDate)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.FromDate, new { @class = "control-label" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-5">
+        <div class="form-group form-inline">
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SearchQuery,
+                   new
+                   {
+                       htmlAttributes = new
+                       {
+                           @class = "form-control",
+                           style = "width:100%"
+                       }
+                   })
+                @Html.ValidationMessageFor(model => model.SearchQuery)
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.SearchQuery, new { @class = "control-label" })
+            </div>
+        </div>
+    </div>
+
+
+    @*@Html.TextBox("txtSearch", "Test Value", new { @class = "form-control" })*@
+ 
+</div>
+
+<div class="row" style="font-family:Tajawal;margin-bottom:20px;font-size:20px;direction:rtl;text-align:center;">
+    @*<div class="col-md-6">
+        عدد الرحلةات الكلي : @Model.NumberOfOrders رحلة
+    </div>
+    <div class="col-md-6">
+        الدخل الكلي : @Model.OrdersIncome جنية
+    </div>*@
+</div>
+
+
+
+
+
+
+<table id="table" class="table table-bordered table-hover" style="width:100%">
+    <thead class="thead-light">
+        <tr class="rows">
+            @*<th></th>*@
+            <th>كود الرحلة</th>
+            <th>تاريخ الرحلة</th>
+            <th>السعر</th>
+            <th>اسم العميل</th>
+            <th>تليفون العميل</th>           
+            <th>اسم السائق</th>
+            <th>تليفون السائق</th>
+            <th>رقم المركبة</th>
+            <th>تاريخ التوصيل</th>
+            <th>ملاحظات العميل</th>
+            <th>تقييم العميل</th>
+            <th>ملاحظات السائق</th>
+            <th>تقييم السائق</th>
+            <th>زمن الرحلة بالدقائق</th>
+            <th>الحالة</th>
+            @*<th>مفعل؟</th>*@
+            <th></th>
+            <th></th>
+
+        </tr>
+    </thead>
+    
+</table>
+
+
+@section scripts{
+    <script>
+        var EnableDisableColumn = {
+            "data": { Id: "Id", State: "State" },
+            "render": RenderEnableDisableButtons,
+            "orderable": false,
+            "searchable": false,
+            "width": "40px"
+        }
+
+        var buttonColumn = {
+            "data": {
+                Id: "Id",
+                FromLatitude: "FromLatitude",FromLongitude: "FromLongitude",
+                ToLatitude: "ToLatitude", ToLongitude: "ToLongitude"
+            },
+            "render": RenderActionButtonsAdmin,
+            "orderable": false,
+            "searchable": false,
+            "width": "230px"
+        }
+
+
+
+        $(document).ready(
+           GetServerSideDataTableCustomeSearch('table', '@Url.Action("ViewAllOrders", "Order")',
+               [
+                   //{ data: null, width: "4%" },
+                   {
+                       data: "Id",
+                       "name": "Id"
+                   },
+                   {
+                       data: "Date",
+                       "name": "Date",
+                       render: convertJsonDateToShortDateTime,
+                   },
+                   {
+                       data: "Price",
+                       "name": "Price"
+                   },
+                   {
+                       data: "ClientName",
+                       "name": "ClientName"
+                   },
+                   {
+                       data: "ClientPhone",
+                       "name": "ClientPhone"
+                   },                 
+                   {
+                       data: "DeliveryManName",
+                       "name": "DeliveryManName"
+                   },
+                   {
+                       data: "DeliveryManPhone",
+                       "name": "DeliveryManPhone"
+                   },
+                   {
+                       data: "VehicleNumber",
+                       "name": "VehicleNumber"
+                   },
+
+                   {
+                       data: "DeliveryDate",
+                       "name": "DeliveryDate",
+                       render: convertJsonDateToShortDateTime,
+                   },
+                   {
+                       data: "ClientNotes",
+                       "name": "ClientNotes"
+                   },
+                   {
+                       data: "ClientRating",
+                       "name": "ClientRating"
+                   },
+                   {
+                       data: "DeliveryNotes",
+                       "name": "DeliveryNotes"
+                   },
+                   {
+                       data: "DeliveryManRating",
+                       "name": "DeliveryManRating"
+                   },
+                    {
+                        data: "TravelTime",
+                        "name": "TravelTime",
+                        render: time_convert
+                    },
+                   {
+                       data: "State",
+                       "name": "State",
+                       render:RenderState
+                   },
+                   //{
+                   //    data: "isActive",
+                   //    "name": "isActive",
+                   //},
+                   buttonColumn,
+                   EnableDisableColumn
+               ],
+               'FromDate',
+               'ToDate',
+               'SearchQuery')
+
+
+
+       );
+
+                                                                                    
+
+        function RenderActionButtonsAdmin(data) {
+            return "<a class='btn btn-warning' style='margin-right:4px;' target='_blank' href='https://www.google.com/maps/dir/" + data.FromLatitude + "," + data.FromLongitude + "/" + data.ToLatitude + "," + data.ToLongitude + "'><i class='fa fa-globe'></i></a>\
+                    <a class='btn btn-success' style='margin-right:4px;' onclick=PopupForm('@Url.Action("AddEditOrder", "Order")/" + data.Id + "')><i class='fa fa-pencil'></i></a>\
+                    <a class='btn btn-info' style='margin-right:4px;' target='_blank' href='http://adlink2019-001-site27.etempurl.com/imginvoices/" + data.Id + ".jpg'><i class='fa fa-paperclip'></i></a>\
+                    <a class='btn btn-danger' style='margin-right:1px;' onclick=Delete('@Url.Action("DeleteOrder", "Order")/" + data.Id + "','الرحلة؟')><i class='fa fa-trash'></i></a>"
+        };
+
+        function RenderEnableDisableButtons(data) {
+            if (data.State != 3) {
+                return "<a class='btn btn-info btn-sm' style='margin-right:1px;'\
+                onclick=ToggleStatus('@Url.Action("ToggleOrderActive", "Order")/" + data.Id + "')><i class='fa fa-stop'></i></a>"
+            }
+            if (data.State == 3) {
+                return "<i style='color:green' class='fa fa-battery-full'></i>"
+            }
+
+        };
+
+        function time_convert(num) {
+            var hours = Math.floor(num / 60);
+            var minutes = num % 60;
+            return hours + ":" + minutes;
+        }
+
+        function RenderState(State) {
+            if (State == 0) { return '<h4><span class="label label-info badge-pill">جاري البحث عن سائق</span></h4>'; }
+            else if (State == 1) { return '<h4><span class="label label-warning badge-pill">السائق في الطريق</span></h4>'; }
+            else if (State == 2) { return '<h4><span class="label label-warning badge-pill">جاري التوصيل</span></h4>'; }
+            else if (State == 3) { return '<h4><span class="label label-success badge-pill">تم الانتهاء</span></h4>'; }
+            else if (State == 4) { return '<h4><span class="label label-danger badge-pill">حجز</span></h4>'; }
+
+        };
+
+        function RenderStoreName(StoreName) {         
+            if (!StoreName || StoreName.length === 0 || StoreName === null) {           
+                return '<strong>طلب مخصوص</strong>';
+            }
+            else {
+                return StoreName;
+            }
+
+        }
+
+
+        oTable = $('#table').DataTable();
+        $('#SearchButton').click(function () {
+            //oTable.search($('#txtSearch').val());
+            oTable.draw();
+        });
+
+        $('#table_filter input').unbind();
+        $('#table_filter input').keyup(function (e) {
+            if (e.keyCode == 13) /* if enter is pressed */ {
+                oTable.search($(this).val()).draw();
+            }
+        });
+    </script>
+
+    <script>
+        AnimateButton2('AddButton');
+    </script>
+}
+

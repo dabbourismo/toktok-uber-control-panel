@@ -1,0 +1,167 @@
+﻿@model ElCaptain.Models.ClientDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+@using (Html.BeginForm("AddEditClient", "Clients", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    @Html.Hidden("PreviousUsername", Model.Username)
+    @Html.HiddenFor(model => model.Latitude)
+    @Html.HiddenFor(model => model.Longitude)
+    <div class="container PanelContainer" style="width:650px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">بيانات العميل</div>
+            <div class="panel-body">
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Username, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", autofocus = "autofocus" } })
+                            @Html.ValidationMessageFor(model => model.Username)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Password, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </div>
+                    </div>
+                </div>
+
+
+
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                </div>*@
+
+                @*<div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.City, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.City
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "GovernemntDropDown" })
+                            @Html.ValidationMessageFor(model => model.City)
+                        </div>
+                    </div>
+                </div>*@
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone1, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Phone1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Phone1)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone2, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Phone2, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.ValidationMessageFor(model => model.Phone2)
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address1, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control", style = "height:127px;resize:none;" } })
+                            @Html.ValidationMessageFor(model => model.Address1)
+                        </div>
+                    </div>
+                </div>*@
+
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address2, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control", style = "height:127px;resize:none;" } })
+                            @Html.ValidationMessageFor(model => model.Address2)
+                        </div>
+                    </div>
+                </div>*@
+
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NearestMonument, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.NearestMonument, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NearestMonument)
+                        </div>
+                    </div>
+                </div>*@
+
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NationalId, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.NationalId, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.NationalId)
+                        </div>
+                    </div>
+                </div>*@
+
+
+                <div class="form-group">
+                    @{
+                        if (Model.Id == 0)
+                        {
+                            <input type="submit" value="اضافة" class="btn btn-success" style="width:100%" />
+                        }
+                        else
+                        {
+                            <input type="submit" value="تعديل" class="btn btn-success" style="width:100%" />
+                        }
+                    }
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+                        }
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>$.validator.setDefaults({ onkeyup: false });</script>
+<script>
+    DropDownSuggestions('GovernemntDropDown');
+
+
+
+    $(function () {
+        $('#Username').rules().remote.complete = function (xhr) {
+            if (xhr.status == 200 && xhr.responseText === 'true') {
+                // validation succeeded => we fetch the id that
+                // was sent from the server
+                var id = xhr.getResponseHeader('username');
+
+                // and of course we do something useful with this id
+                $('#Username').addClass('input-validation-success');
+            }
+        };
+    });
+</script>
+

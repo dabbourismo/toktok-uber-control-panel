@@ -1,0 +1,23 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    @{
+
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">البيانات <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="text-align:right;font-weight:bolder;font-size:20px;">
+                <li>@Html.ActionLink("قائمة الرحلات", "Index", "Order")</li>
+               @* <li>@Html.ActionLink("داشبورد", "Index", "Dashboard")</li>*@
+                <li>@Html.ActionLink("السائقين", "Index", "DeliveryMan")</li>
+            </ul>
+        </li>
+    
+    }
+</ul>
+
+<ul class="nav navbar-nav navbar-left">
+    <li>
+        @{
+            @Html.ActionLink("تسجيل خروج", "Logout", "Gate")
+        }
+    </li>
+</ul>
+

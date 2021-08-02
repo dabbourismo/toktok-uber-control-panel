@@ -1,0 +1,96 @@
+﻿@model ElCaptain.Models.PricingDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+@using (Html.BeginForm("AddEditPricing", "Pricing", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="container PanelContainer">
+        <div class="panel panel-primary">
+            <div class="panel-heading">التسعير</div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Pricing1, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pricing1,
+                           new { htmlAttributes = new { @class = "form-control", autofocus = "autofocus", type = "number" } })
+                            @Html.ValidationMessageFor(model => model.Pricing1)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Pricing2, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pricing2,
+                           new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                            @Html.ValidationMessageFor(model => model.Pricing2)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Pricing3, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pricing3,
+                           new { htmlAttributes = new { @class = "form-control",  type = "number" } })
+                            @Html.ValidationMessageFor(model => model.Pricing3)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Pricing4, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pricing4,
+                           new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                            @Html.ValidationMessageFor(model => model.Pricing4)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @{
+                            if (Model.Id == 0)
+                            {
+                                <input type="submit" value="اضافة" class="btn btn-success" style="width:100%" />
+                            }
+                            else
+                            {
+                                <input type="submit" value="تعديل" class="btn btn-primary" style="width:100%" />
+                            }
+
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+                            }
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>$.validator.setDefaults({ onkeyup: false });</script>
+
+<script>
+    $(document).ready(function () {
+        $('.NO-CACHE').attr('src', function () { return $(this).attr('src') + "?a=" + Math.random() });
+    });
+</script>

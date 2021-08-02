@@ -1,0 +1,12 @@
+﻿@model string
+<div class="gradient-Header animate__animated animate__fadeInLeft">
+    <div class="gradient-child">
+        <h1>@this.ViewData["Title"].ToString()</h1>
+    </div>
+</div>
+
+<a class="btn btn-primary" id="AddButton" style="margin-bottom:10px;margin-top:15px;"
+   onclick="PopupForm('@Url.Action(this.ViewData["AddEditController"].ToString()
+                                  ,this.ViewData["Controller"].ToString())')">
+    اضافة <i class="fa fa-plus"> </i>
+</a>

@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "العملاء";
+}
+
+@Html.Partial("_TitleHeader", null,
+    new ViewDataDictionary {
+          { "Title", "الاشعارات" }
+        , {"AddEditController","AddEditNotification" }
+        , {"Controller","Notification" }})
+
+<table id="table" class="table table-bordered table-hover" style="width:100%">
+    <thead class="thead-light">
+        <tr class="rows">
+            @*<th></th>*@
+            <th>العنوان</th>
+            <th>الوصف</th>
+            <th>موجة الى</th>
+            <th>تاريخ الانتهاء</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+    <script>
+        var buttonColumn = {
+            "data": "Id",
+            "render": RenderActionButtonsAdmin,
+            "orderable": false,
+            "searchable": false,
+            "width": "100px"
+        }
+        $(document).ready(
+           GetServerSideDataTable('table', '@Url.Action("ViewAllNotifications", "Notification")',
+               [
+                   //{ data: null, width: "4%" },
+                   {
+                       data: "Name",
+                       "name": "Name"
+                   },
+                   {
+                       data: "Description",
+                       "name": "Description"
+                   },
+                   {
+                       data: "NotifType",
+                       "name": "NotifType",
+                       render: RenderNotifType
+                   },
+                   {
+                       data: "ExpireDate",
+                       "name": "ExpireDate",
+                       render: convertJsonDateToShortDate,
+                   },
+                   buttonColumn
+               ])
+       );
+
+        function RenderActionButtonsAdmin(Id) {
+            return "<a class='btn btn-success' style='margin-right:4px;' onclick=PopupForm('@Url.Action("AddEditNotification", "Notification")/" + Id + "')><i class='fa fa-pencil'></i></a>\
+                    <a class='btn btn-danger' style='margin-right:1px;' onclick=Delete('@Url.Action("DeleteNotification", "Notification")/" + Id + "','الاشعار؟')><i class='fa fa-trash'></i></a>"
+        };
+
+        function RenderNotifType(RenderNotifType) {
+            if (RenderNotifType == 0) { return '<h4><span class="label label-info badge-pill">عميل</span></h4>'; }
+            else if (RenderNotifType == 1) { return '<h4><span class="label label-warning badge-pill">سائق</span></h4>'; }
+            else if (RenderNotifType == 2) { return '<h4><span class="label label-primary badge-pill">مالك</span></h4>';  }
+
+        };
+
+
+
+    </script>
+
+    <script>
+        AnimateButton2('AddButton');
+    </script>
+}
+

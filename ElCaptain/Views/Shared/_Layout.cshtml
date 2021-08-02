@@ -1,0 +1,110 @@
+﻿@{
+    if (Session["logged"] == null)
+    {
+        Response.Redirect("~/Gate/Index");
+    }
+}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ألو وصلني</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*for datatables*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Almarai&display=swap" rel="stylesheet">
+    <link href="~/Content/jquery-ui.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" rel="stylesheet">
+    <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="float:right;text-align:right">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#" style="margin :0;padding: 3px;">
+                    @* <img alt="Adlink" src="#" style="max-height:100%;">*@
+                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("National Chemistry Academy", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+
+
+            <div class="navbar-collapse collapse">
+                @{
+                    if ((string)Session["userType"] == "admin")
+                    {
+                        @Html.Partial("_Navbar")
+                    }
+                    else if ((string)Session["userType"] == "owner")
+                    {
+                        @Html.Partial("_OwnerNavbar")
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Adlink Group</p>
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-6">
+                    @*<h2 style = "color:white;border-radius:10px;background-color:#e0731f;padding:25px;width:100%" > المرحلة الاولى</h2>*@
+
+                </div>
+                <div class="col-md-3">
+
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="loaderbody" id="loaderbody">
+        <div class="loader"></div>
+    </div>
+
+
+    <!--#region scripts-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*for datatables*@
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+    @*buttons*@
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+
+    <script src="~/Scripts/notify.min.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/Main.js"></script>
+
+    <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.24/api/sum().js"></script>
+
+    <!--#endregion-->
+    @RenderSection("scripts", required: false)
+</body>
+</html>

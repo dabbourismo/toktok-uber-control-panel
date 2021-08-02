@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "العملاء";
+}
+
+@Html.Partial("_TitleHeader", null,
+    new ViewDataDictionary {
+          { "Title", "العملاء" }
+        , {"AddEditController","AddEditClient" }
+        , {"Controller","Clients" }})
+
+
+
+
+<table id="table" class="table table-bordered table-hover" style="width:100%">
+    <thead class="thead-light">
+        <tr class="rows">
+            @*<th></th>*@
+            @*<th>الاسم</th>*@
+            <th>م</th>
+            <th>اسم المستخدم</th>
+            <th>موبايل 1</th>
+            <th>موبايل 2</th>
+            @*<th>العنوان 1</th>*@
+            @*<th>اقرب معلم</th>*@
+            <th>تاريخ التسجيل</th>
+            <th>تاريخ اخر رحلة</th>
+            <th>عدد الرحلات الكلي</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+    <script>
+        var buttonColumn = {
+            "data": { Id: "Id", Latitude: "Latitude", Longitude: "Longitude" },
+            "render": RenderActionButtonsAdmin,
+            "orderable": false,
+            "searchable": false,
+            "width": "100px"
+        }
+        var EnableDisableColumn = {
+            "data": { Id: "Id", isActive: "isActive" },
+            "render": RenderEnableDisableButtons,
+            "orderable": false,
+            "searchable": false,
+            "width": "40px"
+        }
+
+
+        $(document).ready(
+           GetServerSideDataTable('table', '@Url.Action("ViewAllClients", "Clients")',
+               [
+                   //{ data: null, width: "4%" },
+                   //{
+                   //    data: "Name",
+                   //    "name": "Name"
+                   //},
+                   {
+                       data: "Id",
+                       "name": "Id"
+                   },
+                   {
+                       data: "Username",
+                       "name": "Username"
+                   },
+                   {
+                       data: "Phone1",
+                       "name": "Phone1"
+                   },
+                   {
+                       data: "Phone2",
+                       "name": "Phone2"
+                   },
+                   //{
+                   //    data: "Address1",
+                   //    "name": "Address1"
+                   //},
+                   //{
+                   //    data: "NearestMonument",
+                   //    "name": "NearestMonument"
+                   //},
+                   {
+                       data: "RegisterDate",
+                       "name": "RegisterDate",
+                       render: convertJsonDateToShortDate,
+                       
+                   },
+                    {
+                        data: "LastOrderDate",
+                        "name": "LastOrderDate",
+                        render: convertJsonDateToShortDate,
+                    },
+                     {
+                         data: "TotalOrders",
+                         "name": "TotalOrders"
+                     },
+                    {
+                        data: "isActive",
+                        "name": "isActive",
+                        render: RenderisActive
+                    },
+                    
+                   buttonColumn,
+                   EnableDisableColumn
+               ])
+       );
+
+        function RenderActionButtonsAdmin(data) {
+            return "<a class='btn btn-success' style='margin-right:4px;' onclick=PopupForm('@Url.Action("AddEditClient", "Clients")/" + data.Id + "')><i class='fa fa-pencil'></i></a>\
+                    <a class='btn btn-warning' style='margin-right:4px;' target='_blank' href='https://www.google.com/maps/search/?api=1&query="+ data.Latitude + "," + data.Longitude + "'><i class='fa fa-globe'></i></a>\
+                    <a class='btn btn-danger' style='margin-right:1px;' onclick=Delete('@Url.Action("DeleteClient", "Clients")/" + data.Id + "','العميل؟')><i class='fa fa-trash'></i></a>"
+        };
+
+        function RenderEnableDisableButtons(data) {
+            if (data.isActive == 0) {
+                return "<a class='btn btn-info btn-sm' style='margin-right:1px;'\
+                onclick=ToggleStatus('@Url.Action("ToggleClientActive", "Clients")/" + data.Id + "')><i class='fa fa-stop'></i></a>"
+            }
+            if (data.isActive == 1) {
+                return "<a class='btn btn-info btn-sm' style='margin-right:1px;'\
+                onclick=ToggleStatus('@Url.Action("ToggleClientActive", "Clients")/" + data.Id + "')><i class='fa fa-play'></i></a>"
+            }
+        };
+
+        function RenderisActive(isActive) {
+            if (isActive == 1) { return '<h4><span class="label label-success badge-pill">مفعل</span></h4>'; }
+            else if (isActive == 0) { return '<h4><span class="label label-danger badge-pill">غير مفعل</span></h4>'; }
+        };
+
+    </script>
+
+    <script>
+        AnimateButton2('AddButton');
+    </script>
+}
+

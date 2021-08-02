@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "التسعير";
+}
+
+<div class="gradient-Header animate__animated animate__fadeInLeft">
+    <div class="gradient-child">
+        <h1>التسعير</h1>
+    </div>
+</div>
+
+<table id="table" class="table table-bordered table-hover" style="width:100%;margin-top:40px;">
+    <thead class="thead-light">
+        <tr class="rows">
+            @*<th></th>*@
+            <th>مسافة كسر البنديرة</th>
+            <th>سعر فتح البنديرة</th>
+            <th>مسافة بعد الفتح</th>
+            <th>السعر بعد الكسر</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+    <script>
+        var buttonColumn = {
+            "data": "Id",
+            "render": RenderActionButtonsAdmin,
+            "orderable": false,
+            "searchable": false,
+            "width": "100px"
+        }
+        $(document).ready(
+           GetServerSideDataTable('table', '@Url.Action("ViewAllPricings", "Pricing")',
+               [
+                   //{ data: null, width: "4%" },
+                   {
+                       data: "Pricing1",
+                       "name": "Pricing1"
+                   },
+                   {
+                       data: "Pricing2",
+                       "name": "Pricing2"
+                   },
+                   {
+                       data: "Pricing3",
+                       "name": "Pricing3"
+                   },
+                   {
+                       data: "Pricing4",
+                       "name": "Pricing4"
+                   },
+                   
+                   buttonColumn
+               ])
+       );
+
+        function RenderActionButtonsAdmin(Id) {
+            return "<a class='btn btn-success' style='margin-right:4px;' onclick=PopupForm('@Url.Action("AddEditPricing", "Pricing")/" + Id + "')><i class='fa fa-pencil'></i></a>"
+        };
+
+       
+
+
+
+    </script>
+
+    <script>
+        AnimateButton2('AddButton');
+    </script>
+}
+

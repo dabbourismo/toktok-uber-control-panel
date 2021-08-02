@@ -1,0 +1,163 @@
+﻿@model ElCaptain.Models.StoreDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<head>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+@using (Html.BeginForm("AddEditStore", "Stores", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return SubmitFormWithImage(this);" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    <div class="container PanelContainer" style="width:450px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">بيانات المتجر</div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <img class="lazyload NO-CACHE" src="@Url.Content(@Model.Link + @Model.Id + ".jpg")" style="height:300px;width:100%;" id="imagePreview" />
+                            <input type="file" name="ImageUpload" accept="image/jpeg,image/png,image/jpg" onchange="ShowImagePreview(this, document.getElementById('imagePreview'))" />
+                            @Html.ValidationMessageFor(model => model.ImageUpload)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Category, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.Category
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "CategoryDropDown" })
+                            @Html.ValidationMessageFor(model => model.Category)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", style = "height:127px;resize:none;" } })
+                            @Html.ValidationMessageFor(model => model.Description)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", style = "height:127px;resize:none;" } })
+                            @Html.ValidationMessageFor(model => model.Address)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone1, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Phone1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Phone1)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone2, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Phone2, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Phone2)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Latitude, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.Latitude)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Longitude, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            @Html.ValidationMessageFor(model => model.Longitude)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="incomeRow">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.City, new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.City
+                           , new { @class = "form-control", role = "menu", datatoggle = "dropdown", @id = "GovernemntDropDown" })
+                            @Html.ValidationMessageFor(model => model.City)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.isFree, new { @class = "control-label" })
+                            @Html.EditorFor(model => model.isFree, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.isFree)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @{
+                        if (Model.Id == 0)
+                        {
+                            <input type="submit" value="اضافة" class="btn btn-success" style="width:100%" />
+                        }
+                        else
+                        {
+                            <input type="submit" value="تعديل" class="btn btn-success" style="width:100%" />
+                        }
+                    }
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+                        }
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>$.validator.setDefaults({ onkeyup: false });</script>
+
+<script>
+    $(document).ready(function () {
+        $('.NO-CACHE').attr('src', function () { return $(this).attr('src') + "?a=" + Math.random() });
+    });
+    DropDownSuggestions('GovernemntDropDown');
+</script>

@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "ملاك المركبات";
+}
+
+@Html.Partial("_TitleHeader", null,
+    new ViewDataDictionary {
+          { "Title", "ملاك المركبات" }
+        , {"AddEditController","AddEditVehicleOwner" }
+        , {"Controller","VehicleOwner" }})
+
+
+
+
+<table id="table" class="table table-bordered table-hover" style="width:100%">
+    <thead class="thead-light">
+        <tr class="rows">
+            <th>رقم المالك</th>
+            <th>الاسم</th>
+            <th>التصنيف</th>
+            <th>رقم التليفون</th>
+            <th>العنوان</th>
+            <th>رقم البطاقة</th>
+            <th>عدد المركبات</th>
+            <th>الحالة</th>
+            <th>تاريخ التسجيل</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+@section scripts{
+    <script>
+        var buttonColumn = {
+            "data": "Id",
+            "render": RenderActionButtonsAdmin,
+            "orderable": false,
+            "searchable": false,
+            "width": "100px"
+        }
+        var EnableDisableColumn = {
+            "data": { Id: "Id", isActive: "isActive" },
+            "render": RenderEnableDisableButtons,
+            "orderable": false,
+            "searchable": false,
+            "width": "40px"
+        }
+       
+
+        $(document).ready(
+           GetServerSideDataTable('table', '@Url.Action("ViewAllVehicleOwners", "VehicleOwner")',
+               [
+                   {
+                       data: "Id",
+                       "name": "Id"
+                   },
+                     
+                   {
+                       data: "Name",
+                       "name": "Name"
+                   },
+                   {
+                       data: "Category",
+                       "name": "Category",
+                       render: RenderCategory
+                   },
+                   {
+                       data: "Phone",
+                       "name": "Phone"
+                   },
+                   {
+                       data: "Address",
+                       "name": "Address"
+                   },
+                   {
+                       data: "NationalId",
+                       "name": "NationalId"
+                   }, 
+                   {
+                       data: "NumberOfVehicles",
+                       "name": "NumberOfVehicles"
+                   },  
+                   {
+                       data: "RegisterDate",
+                       "name": "RegisterDate",
+                       render: convertJsonDateToShortDate,
+                   },
+                    {
+                        data: "isActive",
+                        "name": "isActive",
+                        render: RenderisActive
+                    },
+                   buttonColumn,
+                   EnableDisableColumn
+               ])
+       );
+
+        function RenderActionButtonsAdmin(Id) {
+            return "<a class='btn btn-success' style='margin-right:4px;' onclick=PopupForm('@Url.Action("AddEditVehicleOwner", "VehicleOwner")/" + Id + "')><i class='fa fa-pencil'></i></a>\
+                    <a class='btn btn-danger' style='margin-right:1px;' onclick=Delete('@Url.Action("DeleteVehicleOwner", "VehicleOwner")/" + Id + "','مالك المركبة؟')><i class='fa fa-trash'></i></a>"
+        };
+
+        function RenderEnableDisableButtons(data) {
+            if (data.isActive == 0) {
+                return "<a class='btn btn-info btn-sm' style='margin-right:1px;'\
+                onclick=ToggleStatus('@Url.Action("ToggleVehicleOwnerActive", "VehicleOwner")/" + data.Id + "')><i class='fa fa-stop'></i></a>"
+            }
+            if (data.isActive == 1) {
+                return "<a class='btn btn-info btn-sm' style='margin-right:1px;'\
+                onclick=ToggleStatus('@Url.Action("ToggleVehicleOwnerActive", "VehicleOwner")/" + data.Id + "')><i class='fa fa-play'></i></a>"
+            }
+        };
+
+        function RenderisActive(isActive) {
+            if (isActive == 1) { return '<h4><span class="label label-success badge-pill">مفعل</span></h4>'; }
+            else if (isActive == 0) { return '<h4><span class="label label-danger badge-pill">غير مفعل</span></h4>'; }
+        };
+
+        function RenderCategory(Category) {
+            if (Category == 0) { return '<h4><span class="label label-success badge-pill">تعامل مباشر</span></h4>'; }
+            else if (Category == 1) { return '<h4><span class="label label-danger badge-pill">تعامل غير مباشر</span></h4>'; }
+        };
+
+    </script>
+
+    <script>
+        AnimateButton2('AddButton');
+    </script>
+}
+
