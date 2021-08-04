@@ -40,7 +40,7 @@ namespace ElCaptain.Controllers
             var to = new DateTime(dto.ToDate.Year, dto.ToDate.Month, dto.ToDate.Day, 23, 59, 59);
             var vehicleType = (Models.Enums.EnumVehicleType)dto.Category;
 
-            //Vehicle Owner = 0
+            //Vehicle Owner = 0 //الكل
             if (dto.OwnerId == 0)
             {
                 dto.NumberOfOrders = context.Orders.Count();

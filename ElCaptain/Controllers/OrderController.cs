@@ -118,7 +118,8 @@ namespace ElCaptain.Controllers
 
                 foreach (var order in orderList)
                 {
-                    order.TravelTime = Math.Floor((order.DeliveryDate - order.StartDate).TotalHours);
+
+                    order.TravelTime =  Math.Floor((order.DeliveryDate - order.StartDate).TotalMinutes);
                 }
 
 

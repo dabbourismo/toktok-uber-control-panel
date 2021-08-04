@@ -175,7 +175,19 @@ function GetServerSideDataTableCustomeSearch(TableName, ActionURL, TableColumnsA
                 "previous": "السابق",
                 "next": "التالي"
             }
-        }
+        },
+        "dom": "lBfrtip",
+        buttons: [
+            {
+                extend: 'excel',
+                className: 'dtbutton',
+                text: '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel'
+            },          
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print" aria-hidden="true"></i> Print'
+            }
+        ]
     });
 
     $('#'.concat(TableName).concat(' tbody'))
